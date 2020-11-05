@@ -51,7 +51,7 @@ app.get('/login', function(req, res) {
   res.cookie(stateKey, state);
 
   // your application requests authorization
-  var scope = 'user-read-private user-read-email';
+  var scope = 'user-read-private user-read-email user-library-read user-read-currently-playing user-read-recently-played';
   res.redirect('https://accounts.spotify.com/authorize?' +
     querystring.stringify({
       response_type: 'code',
@@ -68,7 +68,7 @@ app.get('/logini', function(req, res) {
   res.cookie(stateKey, state);
 
   // your application requests authorization
-  var scope = 'user-read-private user-read-email';
+  var scope = 'user-read-private user-read-email user-libary-read user-read-currently-playing user-read-recently-played';
   res.redirect('https://accounts.spotify.com/authorize?' +
     querystring.stringify({
       response_type: 'code',
@@ -112,9 +112,6 @@ app.get('/callback', function(req, res) {
 
     request.post(authOptions, function(error, response, body) {
       if (!error && response.statusCode === 200) {
-
-        /*var access_token = body.access_token,
-            refresh_token = body.refresh_token;*/
         access_token = body.access_token;
         refresh_token = body.refresh_token;
 
@@ -123,24 +120,11 @@ app.get('/callback', function(req, res) {
           headers: { 'Authorization': 'Bearer ' + access_token },
           json: true
         };
-
-        // var options_playlist = {
-        //   url: 'https://api.spotify.com/v1/users/anaclara.2001/playlists',
-        //   headers: { 'Authorization': 'Bearer ' + access_token },
-        //   json: true
-        // };
-
         // use the access token to access the Spotify Web API
         request.get(options, function(error, response, body) {
           console.log(body);
           user_id=body.id;
-          
         });
-
-        // request.get(options_playlist, function(error, response, body) {
-        //   console.log(body);
-        // });
-
 
         // we can also pass the token to the browser to make requests from there
         res.redirect('http://localhost:3000/home/#' +
@@ -165,27 +149,15 @@ app.get('/playlists', function(req, res) {
 
     var options = {
       url: `https://api.spotify.com/v1/users/${user_id}/playlists`,
-      // url: 'https://api.spotify.com/v1/me',
       headers: { 'Authorization': 'Bearer ' + access_token },
       json: true
     };
 
     // use the access token to access the Spotify Web API
     request.get(options, function(error, response, body) {
-      // response.json(body);
-      // response.end();
-
       res.send(body);
-
       console.log(body);
     });
-    
-    // we can also pass the token to the browser to make requests from there
-    // res.redirect('http://localhost:3000/home/#' +
-    //   querystring.stringify({
-    //     access_token: access_token,
-    //     refresh_token: refresh_token
-    //   }));
 });
 
 app.get('/refresh_token', function(req, res) {
