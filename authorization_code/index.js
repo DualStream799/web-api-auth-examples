@@ -25,6 +25,15 @@ router.get('/userlist', function(req, res) {
 	});
 });
 
+router.get('/userbyid', function(req, res) {
+	var db = require('./db');
+	var Users = db.Mongoose.model('usercollection', db.UserSchema, 'usercollection');
+	Users.find({ user: req.body.user }).lean().exec(function(e, docs) {
+		res.json(docs);
+		res.end();
+	});
+});
+
 /* POST ONE users. */
 router.post('/users/', function(req, res, next) {
 	var db = require('./db');

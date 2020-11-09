@@ -54,7 +54,7 @@ app.get('/login', function(req, res) {
 
 	// your application requests authorization
 	var scope =
-		'user-read-private user-read-email user-library-read user-read-currently-playing user-read-recently-played';
+		'user-read-private user-read-email user-library-read user-read-currently-playing user-read-recently-played user-top-read';
 	res.redirect(
 		'https://accounts.spotify.com/authorize?' +
 			querystring.stringify({
@@ -73,7 +73,7 @@ app.get('/logini', function(req, res) {
 
 	// your application requests authorization
 	var scope =
-		'user-read-private user-read-email user-libary-read user-read-currently-playing user-read-recently-played';
+		'user-read-private user-read-email user-libary-read user-read-currently-playing user-read-recently-played user-top-read';
 	res.redirect(
 		'https://accounts.spotify.com/authorize?' +
 			querystring.stringify({
