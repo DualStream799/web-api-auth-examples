@@ -7,7 +7,7 @@ let s3 = new aws.S3({
 	mongoose_connection: process.env.MONGO_CONNECTION,
 });
 
-mongoose.connect(s3.config.mongo_connection);
+mongoose.connect(s3.config.mongoose_connection);
 
 var userSchema =new mongoose.Schema({
     user:String,
