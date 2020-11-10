@@ -4,7 +4,7 @@ const aws = require('aws-sdk');
 // mongoose.connect('mongodb://localhost:27017/backend');
 
 let s3 = new aws.S3({
-	mongo_connection: process.env.MONGO_CONNECTION,
+	mongoose_connection: process.env.MONGO_CONNECTION,
 });
 
 mongoose.connect(s3.config.mongo_connection);
