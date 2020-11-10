@@ -10,13 +10,19 @@
 var express = require('express'); // Express web server framework
 var request = require('request'); // "Request" library
 var cors = require('cors');
+require("dotenv").config();
+const aws = require('aws-sdk');
 var querystring = require('querystring');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var client_id = process.env.CLIENT_ID; // Your client id
-var client_secret = process.env.CLIENT_SECRET; // Your secret
-var redirect_uri = 'http://localhost:8888/callback';
-var redirect_urii = 'http://localhost:8888/playlists'; // Your redirect uri
+// var client_id = client_id; // Your client id
+// var client_secret = client_secret; // Your secret
+let s3 = new aws.S3({
+	client_id: process.env.client_id,
+	client_secret: process.env.client_secret
+});
+
+var redirect_uri = 'https://web-api-auth-examples.herokuapp.com/callback';
 var access_token;
 var refresh_token;
 var user_id;
@@ -59,7 +65,7 @@ app.get('/login', function(req, res) {
 		'https://accounts.spotify.com/authorize?' +
 			querystring.stringify({
 				response_type: 'code',
-				client_id: client_id,
+				client_id: s3.config.client_id,
 				scope: scope,
 				redirect_uri: redirect_uri,
 				state: state
@@ -67,7 +73,7 @@ app.get('/login', function(req, res) {
 	);
 });
 
-app.​get​(​'/'​, (​req​, ​res​, ​next​) ​=>​​res​.​status​(​200​).​json​({​message:"API funcionando /o/"​}));
+// app.​get​(​'/'​, (​req​, ​res​, ​next​) ​=>​​res​.​status​(​200​).​json​({​message:"API funcionando /o/"​}));
 
 app.get('/callback', function(req, res) {
 	// your application requests refresh and access tokens
