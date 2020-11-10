@@ -67,6 +67,8 @@ app.get('/login', function(req, res) {
 	);
 });
 
+app.​get​(​'/'​, (​req​, ​res​, ​next​) ​=>​​res​.​status​(​200​).​json​({​message:"API funcionando /o/"​}));
+
 app.get('/callback', function(req, res) {
 	// your application requests refresh and access tokens
 	// after checking the state parameter
