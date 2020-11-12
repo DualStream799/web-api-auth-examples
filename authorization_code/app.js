@@ -15,12 +15,12 @@ const aws = require('aws-sdk');
 var querystring = require('querystring');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var client_id = "ca202a7d6b6646aa9458a56515b54270"; // Your client id
-var client_secret = "86f8504207464693b44033275c2a6ee7"; // Your secret
-// let s3 = new aws.S3({
-// 	client_id: process.env.client_id,
-// 	client_secret: process.env.client_secret
-// });
+// var client_id = "ca202a7d6b6646aa9458a56515b54270"; // Your client id
+// var client_secret = "86f8504207464693b44033275c2a6ee7"; // Your secret
+let s3 = new aws.S3({
+	client_id: process.env.client_id,
+	client_secret: process.env.client_secret
+});
 
 var redirect_uri = 'https://web-api-auth-examples.herokuapp.com/callback';
 var access_token;
@@ -65,8 +65,8 @@ app.get('/login', function(req, res) {
 		'https://accounts.spotify.com/authorize?' +
 			querystring.stringify({
 				response_type: 'code',
-				// client_id: s3.config.client_id,
-				client_id: client_id,
+				client_id: s3.config.client_id,
+				// client_id:client_id,
 				scope: scope,
 				redirect_uri: redirect_uri,
 				state: state
@@ -105,7 +105,7 @@ app.get('/callback', function(req, res) {
 				grant_type: 'authorization_code'
 			},
 			headers: {
-				Authorization: 'Basic ' + new Buffer(client_id + ':' + client_secret).toString('base64')
+				Authorization: 'Basic ' + new Buffer(s3.config.client_id + ':' + s3.config.client_secret).toString('base64')
 			},
 			json: true
 		};
@@ -129,7 +129,7 @@ app.get('/callback', function(req, res) {
 				// we can also pass the token to the browser to make requests from there
 				res.redirect(
 					// 'http://localhost:3000/home/#' +
-					'https://musics4u.herokuapp.com/home#' +
+					'https://musics4u.herokuapp.com/home/#' +
 						querystring.stringify({
 							access_token: access_token,
 							refresh_token: refresh_token
@@ -166,7 +166,7 @@ app.get('/refresh_token', function(req, res) {
 	var refresh_token = req.query.refresh_token;
 	var authOptions = {
 		url: 'https://accounts.spotify.com/api/token',
-		headers: { Authorization: 'Basic ' + new Buffer(client_id + ':' + client_secret).toString('base64') },
+		headers: { Authorization: 'Basic ' + new Buffer(s3.config.client_id + ':' + s3.config.client_secret).toString('base64') },
 		form: {
 			grant_type: 'refresh_token',
 			refresh_token: refresh_token
