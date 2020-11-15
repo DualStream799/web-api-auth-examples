@@ -22,7 +22,7 @@ let s3 = new aws.S3({
 	client_secret: process.env.client_secret
 });
 
-var redirect_uri = 'https://web-api-auth-examples.herokuapp.com/callback';
+var redirect_uri = 'https://spotifyapimanager.herokuapp.com/callback';
 var access_token;
 var refresh_token;
 var user_id;
@@ -128,8 +128,8 @@ app.get('/callback', function(req, res) {
 
 				// we can also pass the token to the browser to make requests from there
 				res.redirect(
-					// 'http://localhost:3000/home/#' +
-					'https://musics4u.herokuapp.com/home/#' +
+					'http://localhost:3000/home/#' +
+					 +
 						querystring.stringify({
 							access_token: access_token,
 							refresh_token: refresh_token
